@@ -10,6 +10,7 @@ import se.lexicon.rest_practice.repository.CustomerRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
 @RestController//**notice in rest u have to use restController not controller
 @RequestMapping("/api/customer/")
@@ -41,7 +42,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")//notice: u have to use deleteMapping not getMapping when u need to delete
-    public ResponseEntity<Customer> deleteById(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> deleteById(@PathVariable("id") Integer id) {
         System.out.println("id = " + id);
         Optional<Customer> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
@@ -52,5 +53,19 @@ public class CustomerController {
         }
     }
 
+    @PostMapping("/")
+    public ResponseEntity<Customer> save(@RequestBody Customer customer) {
+        System.out.println("customer = " + customer);
+        Customer res = customerRepository.save(customer);
+        return ResponseEntity.status(HttpStatus.CREATED).body(res);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<Customer> update(@RequestBody Customer customer) {
+        System.out.println("customer = " + customer);
+        Customer res = customerRepository.save(customer);
+        return ResponseEntity.status(HttpStatus.OK).body(res);
+
+    }
 
 }
